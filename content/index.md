@@ -31,5 +31,6 @@ for GNU development” («Копії, опубліковані Фондом ві
 :caption: "Зміст:"
 
 preface
+part_1
 LICENSE
 ```

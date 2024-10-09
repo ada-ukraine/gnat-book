@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'GNAT book'
+project = 'GNAT: Компілятор Ada'
 copyright = '2004, Javier Miranda and Edmond Schonberg'
 author = 'Javier Miranda, Edmond Schonberg'
 
@@ -26,3 +26,4 @@ language = 'uk'
 # html_theme = 'alabaster'
 html_theme = "sphinx_book_theme"
 html_static_path = ['_static']
+html_title = project
