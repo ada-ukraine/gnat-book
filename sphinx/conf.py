@@ -27,3 +27,7 @@ language = 'uk'
 html_theme = "sphinx_book_theme"
 html_static_path = ['_static']
 html_title = project
+
+# myst
+myst_heading_anchors = 3
+
