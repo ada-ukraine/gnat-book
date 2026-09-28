@@ -2,9 +2,9 @@
 
 **Access type**. An access type has values that designate aliased objects. Access types correspond to "pointer types" or "reference types" in some other languages.
 
-**Aliased**. An aliased view of an object is one that can be designated by an access value. Objects allocated by allocators are aliased. Objects can also be explicitly declared as aliased with the reserved word aliased. The Access attribute can be used to create an access value designating an aliased object.
+`Aliased`. An aliased view of an object is one that can be designated by an access value. Objects allocated by allocators are aliased. Objects can also be explicitly declared as aliased with the reserved word aliased. The Access attribute can be used to create an access value designating an aliased object.
 
-**Class**. A class is a set of types that is closed under derivation, which means that if a given type is in the class, then all types derived from that type are also in the class. The set of types of a class share common properties, such as their primitive operations.
+`Class`. A class is a set of types that is closed under derivation, which means that if a given type is in the class, then all types derived from that type are also in the class. The set of types of a class share common properties, such as their primitive operations.
 
 **Compilation unit**. The text of a program can be submitted to the compiler in one or more compilations. Each compilation is a succession of compilation units. A compilation unit contains either the declaration, the body, or a renaming of a program unit.
 
@@ -14,19 +14,19 @@
 
 **Composite type**. A composite type has components.
 
-**Construct**. A construct is a piece of text (explicit or implicit) that is an instance of a syntactic category defined under "Syntax."
+`Construct`. A construct is a piece of text (explicit or implicit) that is an instance of a syntactic category defined under "Syntax."
 
 **Controlled type**. A controlled type supports user-defined assignment and finalization. Objects are always finalized before being destroyed.
 
-**Declaration**. A declaration is a language construct that associates a name with (a view of) an entity. A declaration may appear explicitly in the program text (an explicit declaration), or may be supposed to occur at a given place in the text as a consequence of the semantics of another construct (an implicit declaration).
+`Declaration`. A declaration is a language construct that associates a name with (a view of) an entity. A declaration may appear explicitly in the program text (an explicit declaration), or may be supposed to occur at a given place in the text as a consequence of the semantics of another construct (an implicit declaration).
 
-**Definition** (view) All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a renaming declaration is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see ARM 8.5)).
+`Definition` (view) All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a renaming declaration is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see ARM 8.5)).
 
 **Derived type**. A derived type is a type defined in terms of another type, which is the parent type of the derived type. Each class containing the parent type also contains the derived type. The derived type inherits properties such as components and primitive operations from the parent. A type together with the types derived from it (directly or indirectly) form a derivation class.
 
 **Discrete type**. A discrete type is either an integer type or an enumeration type. Discrete types may be used, for example, in case statements and as array indices.
 
-**Discriminant**. A discriminant is a parameter of a composite type. It can control, for example, the bounds of a component of the type if that type is an array type. A discriminant of a task type can be used to pass data to a task of the type upon creation.
+`Discriminant`. A discriminant is a parameter of a composite type. It can control, for example, the bounds of a component of the type if that type is an array type. A discriminant of a task type can be used to pass data to a task of the type upon creation.
 
 **Dynamic semantics** (see run-time semantics).
 
@@ -34,11 +34,11 @@
 
 **Enumeration type**. An enumeration type is defined by an enumeration of its values, which may be named by identifiers or character literals.
 
-**Exception**. An exception represents a kind of exceptional situation; an occurrence of such a situation (at run time) is called an exception occurrence. To raise an exception is to abandon normal program execution so as to draw attention to the fact that the corresponding situation has arisen. Performing some actions in response to the arising of an exception is called handling the exception.
+`Exception`. An exception represents a kind of exceptional situation; an occurrence of such a situation (at run time) is called an exception occurrence. To raise an exception is to abandon normal program execution so as to draw attention to the fact that the corresponding situation has arisen. Performing some actions in response to the arising of an exception is called handling the exception.
 
-**Execution**. The process by which a construct achieves its run-time effect is called execution. Execution of a declaration is also called elaboration. Execution of an expression is also called evaluation.
+`Execution`. The process by which a construct achieves its run-time effect is called execution. Execution of a declaration is also called elaboration. Execution of an expression is also called evaluation.
 
-**Expanded Name**. A selected component is called an expanded name if according to the visibility rules, at least one possible interpretation of its prefix denotes a package or an enclosing named construct (directly, not through a subprogram renaming declaration or generic renaming declaration) [AAR95, Section 4.1.3(4)].
+`Expanded_Name`. A selected component is called an expanded name if according to the visibility rules, at least one possible interpretation of its prefix denotes a package or an enclosing named construct (directly, not through a subprogram renaming declaration or generic renaming declaration) [AAR95, Section 4.1.3(4)].
 
 **Generic unit**. A generic unit is a template for a (nongeneric) program unit; the template can be parameterized by objects, types, subprograms, and packages. An instance of a generic unit is created by a generic instantiation. The rules of the language are enforced when a generic unit is compiled, using a generic contract model; additional checks are performed upon instantiation to verify the contract is met. That is, the declaration of a generic unit represents a contract between the body of the generic and instances of the generic. Generic units can be used to perform the role that macros sometimes play in other languages.
 
@@ -54,11 +54,11 @@
 
 **Name resolution rules.** Compile-time rules used in name resolution, including overload resolution.
 
-**Object**. An object is either a constant or a variable. An object contains a value. An object is created by an object declaration or by an allocator. A formal parameter is (a view of) an object. A subcomponent of an object is an object.
+`Object`. An object is either a constant or a variable. An object contains a value. An object is created by an object declaration or by an allocator. A formal parameter is (a view of) an object. A subcomponent of an object is an object.
 
-**Package**. Packages are program units that allow the specification of groups of logically related entities. Typically, a package contains the declaration of a type (often a private type or private extension) along with the declarations of primitive subprograms of the type, which can be called from outside the package, while their inner workings remain hidden from outside users.
+`Package`. Packages are program units that allow the specification of groups of logically related entities. Typically, a package contains the declaration of a type (often a private type or private extension) along with the declarations of primitive subprograms of the type, which can be called from outside the package, while their inner workings remain hidden from outside users.
 
-**Pragma**. A pragma is a compiler directive. There are language-defined pragmas that give instructions for optimization, listing control, etc. An implementation may support additional (implementation-defined) pragmas.
+`Pragma`. A pragma is a compiler directive. There are language-defined pragmas that give instructions for optimization, listing control, etc. An implementation may support additional (implementation-defined) pragmas.
 
 **Primitive operations**. The primitive operations of a type are the operations (such as subprograms) declared together with the type declaration. They are inherited by other types in the same class of types. For a tagged type, the primitive subprograms are dispatching subprograms, providing run-time polymorphism. A dispatching subprogram may be called with statically tagged operands, in which case the subprogram body invoked is determined at compile time. Alternatively, a dispatching subprogram may be called using a dispatching call, in which case the subprogram body invoked is determined at run time.
 
@@ -78,12 +78,12 @@
 
 **Scalar type**. A scalar type is either a discrete type or a real type.
 
-**Subtype**. A subtype is a type together with a constraint, which constrains the values of the subtype to satisfy a certain condition. The values of a subtype are a subset of the values of its type.
+`Subtype`. A subtype is a type together with a constraint, which constrains the values of the subtype to satisfy a certain condition. The values of a subtype are a subset of the values of its type.
 
 **Tagged type**. The objects of a tagged type have a run-time type tag, which indicates the specific type with which the object was originally created. An operand of a class-wide tagged type can be used in a dispatching call; the tag indicates which subprogram body to invoke. Nondispatching calls, in which the subprogram body to invoke is determined at compile time, are also allowed. Tagged types may be extended with additional components.
 
 **Task type**. A task type is a composite type whose values are tasks, which are active entities that may execute concurrently with other tasks. The top-level task of a partition is called the environment task.
 
-**Type**. Each object has a type. A type has an associated set of values, and a set of primitive operations which implement the fundamental aspects of its semantics. Types are grouped into classes. The types of a given class share a set of primitive operations. Classes are closed under derivation; that is, if a type is in a class, then all of its derivatives are in that class.
+`Type`. Each object has a type. A type has an associated set of values, and a set of primitive operations which implement the fundamental aspects of its semantics. Types are grouped into classes. The types of a given class share a set of primitive operations. Classes are closed under derivation; that is, if a type is in a class, then all of its derivatives are in that class.
 
-**View**. (See Definition.)
+`View`. (See Definition.)
