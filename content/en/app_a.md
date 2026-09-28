@@ -1,14 +1,14 @@
-# **Appendix A.** **How to add new Keywords, Pragmas and Attributes**
+# Appendix A. How to add new Keywords, Pragmas and Attributes
 
 This appendix describes how to modify the GNAT front-end to experiment with Ada extensions. As an example we use `Drago`, an experimental extension of Ada 83 designed to support the implementation of fault-tolerant distributed applications. It was the result of an effort to impose discipline and give linguistic support to the group communication paradigm. In the following sections we briefly introduce Drago (Section A.1), and describe the modifications made to the GNAT scanner, parser, and semantic analyzer. A previous version of this work was publised in [MGMG99].
 
-## **A.1 Drago**
+## A.1 Drago
 
 Drago [MAAG96, MAGA00] is an experimental language developed as an extension of Ada for the construction of fault-tolerant distributed applications. The hardware assumptions are: a distributed system with no memory shared among the different nodes, a reliable communication network with no partitions, and *failsilent* nodes (that is, nodes which once failed are never heard from again by the rest of the system.) The language is the result of an effort to impose discipline and give linguistic support to the main concepts of Isis [BCJ 90], as well as to experiment with the group communication paradigm. To help build fault-tolerant distributed applications, Drago explicitly supports two process group paradigms, *replicated process groups* and *cooperative process groups*. Replicated process groups allow the programming of fault-tolerant applications according to the active replication model, while cooperative process groups permit programmers to express parallelism and therefore increase throughput.
 
 A process group in Drago is actually a collection of *agents*, which is the way processes are identified in the language. Agents are rather similar in appearance to Ada tasks (they have an internal state not directly accessible from outside the agent, an independent ow of control, and public operations called *entries*). Furthermore, they are the unit of distribution in Drago and in this sense they perform a role similar to Ada 95 active partitions and Ada 83 programs. Each agent resides in a single node of the network, although several agents can reside in the same node. A Drago program is composed of a number of agents residing at a number of nodes.
 
-## **A.2 First Step: Addition of new Keywords**
+## A.2 First Step: Addition of new Keywords
 
 Drago adds four reserved keywords (**agent**, **group**, **`intragroup`**, and **`replicated`**). In the following sections we describe the main steps required to introduce them into the GNAT environment. GNAT list of predefined identifiers contains all the supported pragmas, attributes and keywords. This list is declared in the specification of package `Snames`. For each predefined identifier there is a constant declaration which records its position in the `Names_Table`. This hash table stores all the names, predefined or not. Keywords are classified in two main groups: keywords shared by Ada 83 and Ada 95, and exclusive Ada 95 keywords. Each group is delimited by means of a subtype declaration. Depending on the GNAT compilation mode, Ada 83 or Ada 95, this subtype allows the scanner to properly distinguish user identifiers from Ada keywords.
 
@@ -28,7 +28,7 @@ subtype Drago_Reserved_Words is
 
 We also updated the value of the constant `Preset_Names`, declared in the body of `Snames`, keeping the order specified in the previous declarations. This constant contains the literals of all the predefined identifiers.
 
-## **A.3 Second step: Addition of new tokens**
+## A.3 Second step: Addition of new tokens
 
 The list of tokens is declared in the package `Scans`. It is an enumerated type whose elements are grouped into classes used for source tests by the parser. For example, `Eterm` class contains all the expression terminators; `Sterm` class contains the simple expressions terminators[^app_a-fn1]; `After_SM` is the class of tokens that can appear after a semicolon; `Declk` is the class of keywords which start a declaration; `Deckn` is the class of keywords which start a declaration but can not start a compilation unit; and `Cunit` is the class of tokens which can begin a compilation unit. Members of each class are alphabetically ordered. We have introduced the new tokens in the following way:
 
@@ -58,7 +58,7 @@ Classes associated with tokens are specified in the third column. Our choices we
 
 According to the alphabetic ordering, `Tok_Agent` is new first token of `Cunit` class. Therefore we updated the declaration of the corresponding subtype *Tok - Class Unit* to start the class with `Tok_Agent`. Finally we modified the declaration of the table `Is_Reserved_Keyword`, which records which tokens are reserved keywords of the language.
 
-## **A.4 Third Step: Update the Scanner Initialization**
+## A.4 Third Step: Update the Scanner Initialization
 
 The scanner initialization (subprogram `Scn.Initialization`) is responsible for stamping all the keywords stored in the `Names_Table` with the byte code of their corresponding token (0 otherwise). This allows the scanner to determine if a word is an identifier of a reserved keyword. This work is done by means of repeated calls to the procedure `Set_Name_Table_Byte` passing the keyword and its corresponding token byte as parameters. Therefore we added the following sentences to the scanner initialization:
 
@@ -76,7 +76,7 @@ Set_Name_Table_Byte (Name_Replicated,
 
 We also modified the scanner (subprogram `Scn.Scan`) in order to recognize the new keywords only when compiling a Drago program. This allows us to preserve its original behaviour when analyzing Ada source code. This was the last modification required to integrate the new keywords into GNAT. In the following section we describe the modifications made to add one new pragma and one attribute into the GNAT scanner.
 
-## **A.5 Addition of Pragmas an Attributes**
+## A.5 Addition of Pragmas an Attributes
 
 Drago provides one new attribute `Member_Identifier` and one new pragma (`Drago`). When `Member_Identifier` is applied to a group identifier it returns the identifier of the current agent in the specified group. When pragma `Drago` is applied the compiler is notified about the existence of Drago code (similar to GNAT pragmas `Ada83` and `Ada95`). For integrating them into GNAT we had to modify the package `Snames` in the following way:
 
@@ -86,7 +86,7 @@ Drago provides one new attribute `Member_Identifier` and one new pragma (`Drago`
 3. Add their literals in `Preset_Names`. Similar to the introduction of the keywords, we must keep the order specified in the list of predefined identifiers.
 4. Update the C file *a-snames.h*. This file associates a C macro to each element of the types `Attribute_Id` and `Pragma_Id`. This work can be automatically done by means of the GNAT utility *xsnames*.
 
-## **A.6 Addition of New Syntax Rules**
+## A.6 Addition of New Syntax Rules
 
 In this section we describe, by means of an example, the modifications made in the parser in order to support Drago syntax. The example is the specification of a Drago group, whose syntax is similar to the one of an Ada package specification:
 
@@ -105,7 +105,7 @@ GROUP SPECIFICATION ::=
 
 Replicated groups are denoted by the reserved keyword **`replicated`** at the heading of the group specification. Cooperative groups do not require any reserved word because they are considered the default group specification. The first list of declarative items of a group specification (the *intergroup section*) contains all the information that clients are able to know about this group. The optional list of declarative items after the keyword **`intragroup`** is called the *intragroup section*. It contains information that only members of the group are able to know, and it can be declared only in a cooperative group specification[^app_a-fn2]. The optional list of declarative items after the reserved word **`private`** is called the *private section* and provides groups with the same functionality as the private part of Ada packages. The following sections describe the steps made in order to add this syntax to the GNAT parser.
 
-### **A.6.1 First step: Addition of New Node Kinds**
+### A.6.1 First step: Addition of New Node Kinds
 
 GNAT node kinds are declared in the enumerated `Sinfo.Node_Kind`. Similar to `Token_Type` elements, all its elements are grouped into classes (i.e. nodes that correspond to sentences, nodes which correspond to operators, ...), and elements of each class are alphabetically ordered.
 
@@ -113,7 +113,7 @@ The addition of the rules of a Drago group required two additional kinds of node
 
 [^app_a-fn2]: Replicated groups do not have this facility because their members are assumed to be replicas of a deterministic automaton and thus they do not need to exchange their state —all the replicas have the same state.
 
-### **A.6.2 Second Step: High-level specification of the new nodes**
+### A.6.2 Second Step: High-level specification of the new nodes
 
 The specification of package `Sinfo` contains the high level specification of the AST nodes (cf. Section 2.2.1). When we define a new node we have two possibilities: to reuse the AST field-names used in the current high-level specification of Ada, or to define new names. In the first case we must keep all its features: field-number and associated data. In the second case we must carefully analyze the field to which we associate the new names because once it is stated it must be kept fixed for all nodes; in addition, for each new name we must declare two subprograms in `Sinfo`: one procedure (used to set the value of the field), and one function (to get the stored value). Following with out example, the templates associated with `N_Group_Declaration` and `N_Group_Specification` are:
 
@@ -135,7 +135,7 @@ This means that the value of `Sloc` in a `N_Group_Declaration` node points to th
 
 Similar to GNAT handling of private packages, the handling of replicated groups only requires the addition of one new flag in the AST root node (`Flag15` for a private package, and we chose `Flag16` for a replicated group).
 
-### **A.6.3 Third Step: Automatic modification of the frontend**
+### A.6.3 Third Step: Automatic modification of the frontend
 
 The templates specified in the previous step are used by three GNAT utility programs (*xsinfo, xtreeprs* and *xnmake*) to automatically generate four frontend source files involved in the handling of nodes: *a-sinfo.h, treeprs.ads, nmake.ads* and *nmake.adb* (cf. Figure A.1).
 
@@ -143,7 +143,7 @@ The templates specified in the previous step are used by three GNAT utility prog
 
 Figure A.1: GNAT utility programs.
 
-### **A.6.4 Fourth Step: Update of the Parser**
+### A.6.4 Fourth Step: Update of the Parser
 
 The GNAT parser is implemented by means of the well known recursive descent technique. All its code is inside the function `Par` which is composed of several subunits (one subunit for each Ada Reference Manual Chapter [AAR95]). According to this philosophy we decided to add the subunit `Par.Drag` to group all the parser code that syntactically analyzes Drago rules (figure A.2). We gave the name `P_Group` to the function associated with the parsing of a group specification. We used the fragment of the parser that analyzes a package specification as a reference for its development. Finally we modified the parsing of a compilation unit to include a call to this function when analyzing Drago source code and it detects a group token.
 
@@ -151,7 +151,7 @@ The GNAT parser is implemented by means of the well known recursive descent tech
 
 Figure A.2: New parser structure.
 
-## **A.7 Verification of the Semantics**
+## A.7 Verification of the Semantics
 
 When the parser finishes its work, the semantic analyzer makes a top-down traversal of the AST and, according to the kind of each visited node, it calls one subprogram that semantically verifies it. These subprograms are structured as a set of packages. Each package contains all the subprograms required to verify the semantic rules of each ARM chapter (packages `Sem_Ch2`..`Sem_Ch13`). There is one subprogram for each node type created by the parser and the main package that derivates the calls is called `Sem`.
 
@@ -170,10 +170,10 @@ Figure A.3: GNAT semantic utility program
 
 Finally we modified the `Sem` package to include calls to these subprograms when analyzing a group specification (or declaration) node.
 
-## **A.8 Tree expansion**
+## A.8 Tree expansion
 
 In the general case, to generate code there is no need to access the GIGI level, and our work finishes at the expansion phase. Following with our example, we expanded the Drago nodes into Ada 95 nodes which called several added Run-Time subprograms. Again, we recommend to use the expansion subprograms available in the GNAT sources as a reference.
 
-## **A.9 Summary**
+## A.9 Summary
 
 This appendix has described the integration of Drago into the GNAT frontend. Drago is a language designed as an Ada extension to experiment with the active replication model of fault-tolerant distributed programming. We have focused our attention on the lexical, syntactic and semantic aspects of the integration. The abstract syntax tree expansion and code generation have not been discussed here.

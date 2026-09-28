@@ -1,4 +1,4 @@
-# **Appendix B.** **Glossary**
+# Appendix B. Glossary
 
 **Access type**. An access type has values that designate aliased objects. Access types correspond to "pointer types" or "reference types" in some other languages.
 
