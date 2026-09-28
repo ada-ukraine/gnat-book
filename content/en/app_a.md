@@ -30,7 +30,7 @@ We also updated the value of the constant `Preset_Names`, declared in the body o
 
 ## **A.3 Second step: Addition of new tokens**
 
-The list of tokens is declared in the package `Scans`. It is an enumerated type whose elements are grouped into classes used for source tests by the parser. For example, `Eterm` class contains all the expression terminators; `Sterm` class contains the simple expressions terminators<sup>1</sup>; `After_SM` is the class of tokens that can appear after a semicolon; `Declk` is the class of keywords which start a declaration; `Deckn` is the class of keywords which start a declaration but can not start a compilation unit; and `Cunit` is the class of tokens which can begin a compilation unit. Members of each class are alphabetically ordered. We have introduced the new tokens in the following way:
+The list of tokens is declared in the package `Scans`. It is an enumerated type whose elements are grouped into classes used for source tests by the parser. For example, `Eterm` class contains all the expression terminators; `Sterm` class contains the simple expressions terminators[^app_a-fn1]; `After_SM` is the class of tokens that can appear after a semicolon; `Declk` is the class of keywords which start a declaration; `Deckn` is the class of keywords which start a declaration but can not start a compilation unit; and `Cunit` is the class of tokens which can begin a compilation unit. Members of each class are alphabetically ordered. We have introduced the new tokens in the following way:
 
 ```ada
 type Token_Type is (
@@ -52,7 +52,7 @@ Classes associated with tokens are specified in the third column. Our choices we
 - `Intragroup` must always appear after a semicolon (see the specification of a Drago group on section A.6).
 - `Agent` and `Group` start a compilation unit and a new declaration.
 
-<sup>1</sup>All the reserved keywords, except *mod, rem, new, abs, others, null, delta, digits, range, and, or xor, in* and **`not`**, are always members of these two classes (`Eterm`, `Sterm`).
+[^app_a-fn1]: All the reserved keywords, except *mod, rem, new, abs, others, null, delta, digits, range, and, or xor, in* and **`not`**, are always members of these two classes (`Eterm`, `Sterm`).
 
 `Replicated` qualifies a group (similar to Ada 95 private packages, where the word **`private`** preceding a package declaration qualifies the package; they are otherwise public). Therefore they were placed in the same section.
 
@@ -103,7 +103,7 @@ GROUP SPECIFICATION ::=
    end [ group identifier ];
 ```
 
-Replicated groups are denoted by the reserved keyword **`replicated`** at the heading of the group specification. Cooperative groups do not require any reserved word because they are considered the default group specification. The first list of declarative items of a group specification (the *intergroup section*) contains all the information that clients are able to know about this group. The optional list of declarative items after the keyword **`intragroup`** is called the *intragroup section*. It contains information that only members of the group are able to know, and it can be declared only in a cooperative group specification<sup>2</sup>. The optional list of declarative items after the reserved word **`private`** is called the *private section* and provides groups with the same functionality as the private part of Ada packages. The following sections describe the steps made in order to add this syntax to the GNAT parser.
+Replicated groups are denoted by the reserved keyword **`replicated`** at the heading of the group specification. Cooperative groups do not require any reserved word because they are considered the default group specification. The first list of declarative items of a group specification (the *intergroup section*) contains all the information that clients are able to know about this group. The optional list of declarative items after the keyword **`intragroup`** is called the *intragroup section*. It contains information that only members of the group are able to know, and it can be declared only in a cooperative group specification[^app_a-fn2]. The optional list of declarative items after the reserved word **`private`** is called the *private section* and provides groups with the same functionality as the private part of Ada packages. The following sections describe the steps made in order to add this syntax to the GNAT parser.
 
 ### **A.6.1 First step: Addition of New Node Kinds**
 
@@ -111,7 +111,7 @@ GNAT node kinds are declared in the enumerated `Sinfo.Node_Kind`. Similar to `To
 
 The addition of the rules of a Drago group required two additional kinds of nodes: `N_Group_Declaration` and `N_Group_Specification`. Due to the similarity of a Drago group specification and an Ada package specification we placed the `N_Group_Declaration` node in the class associated with `N_Package_Declaration` node, and `N_Group_Specification` in the class associated with `N_Package_Specification`.
 
-<sup>2</sup>Replicated groups do not have this facility because their members are assumed to be replicas of a deterministic automaton and thus they do not need to exchange their state —all the replicas have the same state.
+[^app_a-fn2]: Replicated groups do not have this facility because their members are assumed to be replicas of a deterministic automaton and thus they do not need to exchange their state —all the replicas have the same state.
 
 ### **A.6.2 Second Step: High-level specification of the new nodes**
 
